@@ -26,7 +26,7 @@ function App() {
             <div style={{margin: '0 0 0 100px'}}>
                 <h1>Controlled items</h1>
                 <Accordion liList={['eat', 'sleep', 'game']} title={'Tasks'} setCollapsed={setCollapsed} collapsed={collapsed}/>
-                <Rating setRating={setRating} rating={rating}/>
+                <Rating callBackRating={setRating} rating={rating}/>
                 <OnOff on={on} setOn={setOn}/>
             </div>
         </div>
