@@ -31,4 +31,3 @@ export const Rating = ({rating, callBackRating}: RatingPropsType) => {
         </div>
     );
 }
-

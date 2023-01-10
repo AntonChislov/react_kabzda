@@ -6,6 +6,8 @@ import {Rating, RatingValueType} from './components/Rating';
 import {UncontrolledAccordion} from "./components/UncontrolledAccordion";
 import {UncontrolledRating} from "./components/UncontrolledRating";
 import {UncontrolledOnOff} from "./components/UncontrolledOnOff";
+import {BasicSelect, ItemsType} from "./components/SelectMUI";
+import {MySelect} from "./components/Select";
 
 function App() {
 
@@ -14,6 +16,10 @@ function App() {
     const [on, setOn] = useState<boolean>(false)
 
     const [collapsed, setCollapsed] = useState<boolean>(false)
+
+    const items = [
+        {title: 'eat', value: 1}, {title: 'sleep', value: 2}, {title: 'game', value: 3}
+    ]
 
     return (
         <div className="App">
@@ -29,6 +35,7 @@ function App() {
                 <Rating callBackRating={setRating} rating={rating}/>
                 <OnOff on={on} setOn={setOn}/>
             </div>
+            <MySelect titleHeader={'Tasks'} items={items}/>
         </div>
     );
 }
