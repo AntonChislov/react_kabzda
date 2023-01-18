@@ -1,0 +1,19 @@
+.title {
+    padding: 5px;
+    border: 1px solid black;
+    display: inline-block;
+    min-height: 15px;
+    min-width: 40px;
+}
+
+.options {
+    padding: 5px;
+    position: absolute;
+    border: 1px solid black;
+    min-width: 40px;
+}
+
+.active {
+    background: #61dafb;
+
+}

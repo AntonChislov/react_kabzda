@@ -1,22 +1,47 @@
 import React, {useState} from 'react';
-import {action} from "@storybook/addon-actions";
 import {Story} from "@storybook/react";
-import {BasicSelect} from "../components/SelectMUI";
+import {MySelect, SelectType} from "../components/Select";
 
 export default {
-    title: 'BasicSelect',
-    component: BasicSelect
+    title: 'Select',
+    component: MySelect
 }
 
-// export const OnOffChanging: Story<OnOffPropsType> = (args) => {
-//     const [on, setOn] = useState(true)
-//     return <OnOff {...args} setOn={setOn} on={on}/>
+const Template: Story<SelectType> = (args) => <MySelect {...args}/>
+export const MySelectBase= Template.bind({})
+MySelectBase.args = {
+    titleHeader: 'sleep',
+    items: [
+        {title: 'sleep', value: 1},
+        {title: 'game', value: 2},
+        {title: 'eat', value: 3},
+    ]
+}
+
+// const Template: Story<AccordionPropsType> = (args) => <Accordion {...args}/>
+// export const AccordionCollapsed = Template.bind({})
+// AccordionCollapsed.args = {
+//     title: 'Menu',
+//     collapsed: true,
+//     setCollapsed: action('wont uncollapsed'),
+//     liList: ['1', '2', '3']
+// }
+//
+// export const AccordionUnCollapsed = Template.bind({})
+// AccordionUnCollapsed.args = {
+//     title: 'User',
+//     collapsed: false,
+//     liList: ['1', '2', '3'],
+//     setCollapsed: action('wont collapsed')
 // }
 
-// const Template: Story<> = (args) => <BasicSelect {...args}/>
-//
-// export const OnOffChanging = Template.bind({})
-// OnOffChanging.args = {
-//     on: true,
-//     setOn: action('changing')
-// }
+//storybook виснет при отрисовке этого кейса
+
+/*export const AccordionChanged: Story<AccordionPropsType> = (args) => {
+    const [collapsed, setCollapsed] = useState<boolean>(false)
+    return <AccordionChanged {...args} collapsed={collapsed} setCollapsed={setCollapsed}/>
+}
+AccordionChanged.args = {
+    title: 'User',
+    liList: ['1', '2', '3']
+}*/
