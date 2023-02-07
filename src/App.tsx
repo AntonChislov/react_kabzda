@@ -35,7 +35,7 @@ function App() {
                 <Rating callBackRating={setRating} rating={rating}/>
                 <OnOff on={on} setOn={setOn}/>
             </div>
-            <MySelect titleHeader={'Tasks'} items={items}/>
+            <MySelect items={items}/>
         </div>
     );
 }

@@ -1,30 +1,81 @@
-import {useState, KeyboardEvent, useEffect} from "react";
+import {useState, KeyboardEvent, useEffect, useReducer} from "react";
 import s from './Select.module.css'
 
 export type SelectType = {
     items: Array<{ title: string, value: number }>
-    titleHeader: string
 }
 
-export const MySelect = ({items, titleHeader}: SelectType) => {
+const SET_TITLE = 'SET_TITLE'
+const SET_HOVER = 'SET_HOVER'
+const SET_COLLAPSED = 'SET_COLLAPSED'
+const SET_INITIAL_HOVER = 'SET_INITIAL_HOVER'
 
-    const [title, setTitle] = useState(titleHeader)
-    const [collapsed, setCollapsed] = useState(false)
-    const [hover, setHover] = useState(title)
+export type StateType = {
+    title: string
+    collapsed: boolean
+    hover: string | null
+}
 
-    useEffect(() => setHover(title), [title])
+type ActionType = {
+    type: string
+    title?: string
+}
+
+export const reducer = (state: StateType, action: ActionType): StateType => {
+    switch (action.type) {
+        case SET_TITLE:
+            return {
+                ...state,
+                //@ts-ignore
+                title: action.title
+            }
+        case SET_COLLAPSED:
+            return {
+                ...state,
+                collapsed: !state.collapsed
+            }
+        case SET_INITIAL_HOVER:
+            return {
+                ...state,
+                hover: state.title
+            }
+        case SET_HOVER:
+            return {
+                ...state,
+                //@ts-ignore
+                hover: action.title
+            }
+        default:
+            throw new Error('not find action type')
+    }
+}
+
+export const MySelect = ({items}: SelectType) => {
+
+    const initialState: StateType = {
+        title: items[1].title,
+        collapsed: false,
+        hover: null
+    }
+
+    const [state, dispatch] = useReducer(reducer, initialState)
+
+
+    useEffect(() => {
+        dispatch({type: SET_INITIAL_HOVER})
+    }, [state.title])
 
     const collapsedHandler = () => {
-        setCollapsed(!collapsed)
+        dispatch({type: SET_COLLAPSED})
     }
 
     const changeTitle = (title: string) => {
-        setTitle(title)
-        setCollapsed(true)
+        dispatch({type: SET_TITLE, title})
+        dispatch({type: SET_COLLAPSED})
     }
 
     const hoverItem = (title: string) => {
-        setHover(title)
+        if (title) dispatch({type: SET_HOVER, title})
     }
 
     const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -32,22 +83,22 @@ export const MySelect = ({items, titleHeader}: SelectType) => {
         if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
             for (let i = 0; i < items.length; i++) {
                 const nextEl = e.key === 'ArrowDown' ? items[i + 1] : items[i - 1]
-                if (nextEl && items[i].title === hover) {
-                    setTitle(nextEl.title)
+                if (nextEl && items[i].title === state.hover) {
+                    dispatch({type: SET_TITLE, title: nextEl.title})
                 }
             }
         }
         if (e.key === 'Enter' || e.key === 'Escape') {
-            setCollapsed(true)
+            dispatch({type: SET_COLLAPSED})
         }
     }
 
     return (
         <div style={{marginLeft: '30px'}}>
-            <div tabIndex={0} onKeyUp={onKey} className={s.title} onClick={collapsedHandler}>{title}</div>
-            {!collapsed && <div className={s.options}>
+            <div tabIndex={0} onKeyUp={onKey} className={s.title} onClick={collapsedHandler}>{state.title}</div>
+            {!state.collapsed && <div className={s.options}>
                 {items.map(i => <div onMouseEnter={() => hoverItem(i.title)}
-                                     className={hover === i.title ? s.active : ''}
+                                     className={state.hover === i.title ? s.active : ''}
                                      onClick={() => changeTitle(i.title)}
                                      key={i.value}>{i.title}</div>)}
             </div>}
